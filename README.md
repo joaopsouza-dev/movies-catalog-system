@@ -200,7 +200,3 @@ Campo:
 ```properties
 omdb.api-key=...
 ```
-
-## Observação sobre o escopo
-
-Apesar de o projeto possuir API REST, CLI e integração externa, o foco do trabalho está nos testes. Por isso, a explicação e os casos de teste priorizam as funcionalidades principais do catálogo de filmes.
