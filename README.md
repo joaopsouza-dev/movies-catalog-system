@@ -1,149 +1,206 @@
-# 🎬 Catálogo de Filmes
+# Catálogo de Filmes
 
-Sistema de catálogo de filmes desenvolvido como trabalho final da disciplina de **Teste de Software**. O projeto permite que usuários autenticados cadastrem, consultem, atualizem e removam filmes de um catálogo pessoal, com foco na aplicação de técnicas de teste unitário, de API e E2E.
+Este projeto foi desenvolvido para um trabalho da disciplina de Teste de Software. A proposta não é apenas apresentar uma aplicação pronta, mas usar um sistema simples para planejar e explicar os testes que serão realizados futuramente.
 
----
+O sistema escolhido foi um catálogo de filmes, pois ele possui operações comuns em muitos sistemas: cadastrar, consultar, alterar e excluir registros. Essas funcionalidades facilitam a criação de cenários de teste positivos e negativos.
 
-## 📌 Objetivo
-
-Desenvolver um sistema simples e funcional para gerenciamento de um catálogo de filmes, aplicando testes unitários, testes de API e testes E2E, seguindo as melhores práticas de qualidade de software ensinadas na disciplina.
-
----
-
-## 👥 Integrantes do Grupo
+## Autores
 
 | Nome | Matrícula | GitHub |
 |------|-----------|--------|
 | João Pedro Souza Pereira | UC25200260 | joaopsouza-dev |
-| Kenzo Matsunaga | _(preencher)_ | _(preencher)_ |
-| Giulia | _(preencher)_ | _(preencher)_ |
-| Kaylane | _(preencher)_ | _(preencher)_ |
+| Kenzo Matsunaga | UC25200299 | kenzomats |
+| Giulia | UC25200440 | Giulia Valença de Melo - Giu_ |
+| Kaylane | UC25200185 | Lanyx001 |
 
----
+## Objetivo do trabalho
 
-## 🚀 Funcionalidades
+O objetivo principal do projeto é servir como estudo prático para testes de software. A aplicação será utilizada para planejar:
 
-- **Autenticação**: tela de login com usuário e senha.
-- **CRUD de Filmes**:
-  - Cadastrar novo filme (título, diretor, ano, gênero, sinopse, nota).
-  - Consultar filmes cadastrados (listagem e busca por título/gênero).
-  - Atualizar informações de um filme existente.
-  - Remover filme do catálogo.
-- **Interface de usuário**: _(frontend web ou CLI — definir)_.
+- validação de regras de negócio;
+- testes de API REST;
+- simulação de fluxos completos de uso;
+- tratamento de dados inválidos;
+- verificação de respostas esperadas e erros.
 
----
+Assim, o foco do trabalho não está apenas no desenvolvimento do sistema, mas principalmente em mostrar como os testes poderão ser planejados e aplicados.
 
-## 🛠️ Tecnologias
+## O que o sistema faz
 
-> Ajuste conforme as escolhas finais do grupo.
+O sistema permite gerenciar um catálogo de filmes. Cada filme possui:
 
-- **Backend / API**: _(ex: Node.js + Express)_
-- **Frontend**: _(ex: React, ou CLI em Node/Python)_
-- **Banco de dados**: _(ex: SQLite)_
-- **Autenticação**: _(ex: JWT)_
+- id;
+- título;
+- gênero;
+- ano de lançamento;
+- duração em minutos.
 
-### Ferramentas de Teste
+As principais funcionalidades são:
 
-- **Testes Unitários**: _(ex: Jest)_
-- **Testes de API**: _(ex: Supertest / Postman + Newman)_
-- **Testes E2E**: _(ex: Cypress / Playwright)_
+| Funcionalidade | Descrição |
+|---|---|
+| Cadastrar filme | Permite adicionar um novo filme ao catálogo |
+| Listar filmes | Exibe todos os filmes cadastrados |
+| Buscar filme por ID | Consulta um filme específico |
+| Alterar filme | Atualiza os dados de um filme existente |
+| Excluir filme | Remove um filme do catálogo |
+| Consultar OMDb | Busca dados de um filme em uma API externa |
+| Importar OMDb | Busca um filme no OMDb e salva no catálogo |
 
----
+## Regras principais do sistema
 
-## 📂 Estrutura do Projeto
+Para evitar cadastros incorretos, o sistema possui algumas validações:
 
+- o título do filme é obrigatório;
+- o gênero do filme é obrigatório;
+- o ano de lançamento deve estar dentro de um intervalo válido;
+- a duração deve ser maior que zero;
+- não deve existir filme duplicado com o mesmo título e ano.
+
+Essas regras serão importantes para a definição dos casos de teste unitários e dos testes de API.
+
+## Tecnologias utilizadas
+
+| Tecnologia | Uso no projeto |
+|---|---|
+| Java | Linguagem principal |
+| Spring Boot | Criação da API REST |
+| Spring Data JPA | Acesso ao banco de dados |
+| H2 Database | Banco em memória |
+| Maven | Gerenciamento do projeto |
+
+## Estrutura resumida
+
+```text
+src/main/java/br/com/catalogofilmes
+├── controller     # Endpoints da API REST
+├── service        # Regras de negócio
+├── repository     # Acesso ao banco de dados
+├── model          # Classes que representam os dados
+├── integracao     # Comunicação com a API OMDb
+├── exception      # Tratamento de erros
+└── cli            # Menu de linha de comando
 ```
-catalogo-filmes/
-├── backend/
-│   ├── src/
-│   ├── tests/
-│   │   ├── unit/
-│   │   └── api/
-│   └── package.json
-├── frontend/
-│   ├── src/
-│   └── tests/
-│       └── e2e/
-├── docs/
-│   ├── documento-de-visao.md
-│   ├── historias-usuario.md
-│   └── plano-de-testes.md
-└── README.md
+
+O fluxo principal da aplicação é:
+
+```text
+Controller -> Service -> Repository -> Banco H2
 ```
 
----
+No caso da importação pelo OMDb, o fluxo também passa pela camada de integração externa.
 
-## ⚙️ Como Executar o Projeto
+## Endpoints principais da API
 
-### Pré-requisitos
+| Método | Rota | Função |
+|---|---|---|
+| POST | `/filmes` | Cadastrar filme |
+| GET | `/filmes` | Listar filmes |
+| GET | `/filmes/{id}` | Buscar filme por ID |
+| PUT | `/filmes/{id}` | Alterar filme |
+| DELETE | `/filmes/{id}` | Excluir filme |
+| GET | `/filmes/omdb?titulo=...&ano=...` | Consultar filme no OMDb sem salvar |
+| POST | `/filmes/importar` | Importar filme do OMDb e salvar |
 
-- Node.js (versão X ou superior) _(ajustar conforme stack)_
-- _(outros pré-requisitos: banco de dados, etc.)_
+Exemplo de JSON para cadastro:
 
-### Passos
+```json
+{
+  "titulo": "Matrix",
+  "genero": "Ficção",
+  "anoLancamento": 1999,
+  "duracao": 136
+}
+```
+
+## Planejamento de testes futuros
+
+O planejamento de testes será dividido em três grupos principais.
+
+### Testes unitários
+
+Os testes unitários serão usados para validar funções e regras individuais do sistema. O foco principal será a camada de regras de negócio, responsável por processar os dados dos filmes.
+
+Exemplos de cenários:
+
+- cadastrar filme válido;
+- impedir cadastro sem título;
+- impedir cadastro duplicado;
+- buscar filme existente;
+- buscar filme inexistente;
+- alterar filme;
+- excluir filme.
+
+### Testes de API
+
+Os testes de API serão usados para validar os endpoints responsáveis pelas operações do catálogo. Eles deverão simular requisições HTTP e verificar se a API retorna os dados e códigos corretos.
+
+Exemplos de cenários:
+
+- `POST /filmes` deve retornar `201 Created`;
+- `POST /filmes` com dados inválidos deve retornar `400 Bad Request`;
+- `GET /filmes` deve retornar a lista de filmes;
+- `GET /filmes/{id}` com ID inexistente deve retornar `404 Not Found`;
+- `PUT /filmes/{id}` deve alterar os dados;
+- `DELETE /filmes/{id}` deve retornar `204 No Content`.
+
+### Testes E2E
+
+Os testes E2E serão usados para validar o funcionamento completo do sistema simulando o uso por um usuário. A ideia será verificar um fluxo inteiro, desde a entrada dos dados até a resposta final.
+
+Exemplos de fluxos planejados:
+
+- cadastrar um filme e depois consultar a listagem;
+- cadastrar um filme, alterar seus dados e verificar a alteração;
+- cadastrar um filme, excluir e confirmar que ele não aparece mais.
+
+## Casos de teste planejados
+
+Os casos de teste abaixo representam uma proposta inicial para cobrir os principais comportamentos do sistema, incluindo fluxos de sucesso e fluxos de erro.
+
+| Código | Tipo | Objetivo | Resultado esperado |
+|---|---|---|---|
+| CT01 | Unitário | Validar cadastro de filme válido | Filme cadastrado com sucesso |
+| CT02 | Unitário | Validar campos obrigatórios | Erro de dados inválidos |
+| CT03 | Unitário | Validar filme duplicado | Cadastro impedido |
+| CT04 | Unitário | Validar busca de filme inexistente | Erro de filme não encontrado |
+| CT05 | API | Cadastrar filme pela API | Retorno `201 Created` |
+| CT06 | API | Rejeitar cadastro inválido pela API | Retorno `400 Bad Request` |
+| CT07 | API | Listar filmes cadastrados | Retorno `200 OK` com a lista |
+| CT08 | API | Alterar filme pela API | Dados atualizados |
+| CT09 | API | Excluir filme pela API | Retorno `204 No Content` |
+| CT10 | E2E | Fluxo completo de cadastro e consulta | Filme aparece na listagem |
+| CT11 | E2E | Fluxo completo de alteração | Novos dados exibidos |
+| CT12 | E2E | Fluxo completo de exclusão | Filme removido da listagem |
+
+## Como executar o projeto
+
+Para iniciar a API:
 
 ```bash
-# Clonar o repositório
-git clone https://github.com/<usuario>/catalogo-filmes.git
-cd catalogo-filmes
-
-# Instalar dependências do backend
-cd backend
-npm install
-
-# Rodar o backend
-npm start
-
-# Instalar dependências do frontend (em outro terminal)
-cd ../frontend
-npm install
-npm start
+mvn spring-boot:run
 ```
 
----
+A aplicação ficará disponível em:
 
-## ✅ Testes
-
-### Rodando os testes unitários
-
-```bash
-cd backend
-npm test
+```text
+http://localhost:8080
 ```
 
-### Rodando os testes de API
+## API OMDb
 
-```bash
-cd backend
-npm run test:api
+O sistema possui integração com a API OMDb para consultar e importar filmes. A chave da API fica configurada no arquivo:
+
+```text
+src/main/resources/application.properties
 ```
 
-### Rodando os testes E2E
+Campo:
 
-```bash
-cd frontend
-npm run test:e2e
+```properties
+omdb.api-key=...
 ```
 
-As evidências de execução (prints, logs e relatórios) estarão disponíveis em `docs/evidencias/`.
+## Observação sobre o escopo
 
----
-
-## 📄 Documentação
-
-- [Documento de Visão](docs/documento-de-visao.md)
-- [Histórias de Usuário (BDD)](docs/historias-usuario.md)
-- [Plano de Testes](docs/plano-de-testes.md)
-- [Relatório Final](docs/relatorio-final.md)
-
----
-
-## 📚 Disciplina
-
-Trabalho final desenvolvido para a disciplina de **Teste de Software**, sob orientação do(a) professor(a) _(nome)_, na Universidade Católica de Brasília (UCB).
-
----
-
-## 📝 Licença
-
-Projeto acadêmico sem fins comerciais, desenvolvido exclusivamente para fins didáticos.
+Apesar de o projeto possuir API REST, CLI e integração externa, o foco do trabalho está nos testes. Por isso, a explicação e os casos de teste priorizam as funcionalidades principais do catálogo de filmes.
