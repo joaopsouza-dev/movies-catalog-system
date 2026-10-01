@@ -200,3 +200,28 @@ Campo:
 ```properties
 omdb.api-key=...
 ```
+
+## Como executar os testes
+
+Todos os testes ficam em `Projeto/catalogo-filmes/src/test/java/br/com/catalogofilmes`:
+
+| Pacote / classe | Casos de teste | Tipo |
+|---|---|---|
+| `service/FilmeServiceTest` | CT01, CT02, CT03, CT04 (e regras complementares) | Unitário (JUnit 5 + Mockito) |
+| `controller/FilmeApiIntegracaoTest` | CT05, CT06, CT07, CT08, CT09 (e cenários 404/409/OMDb) | API (MockMvc + H2) |
+| `e2e/FilmeE2ECliTest` | CT10, CT11, CT12 | E2E pela interface CLI |
+| `e2e/FilmeE2EHttpTest` | CT10, CT11, CT12 | E2E por HTTP real (porta aleatória) |
+| `FalhasPropositaisTest` | falhas intencionais | Demonstração (desligado por padrão) |
+
+Rodar todos os testes (o OMDb é simulado nos testes, então não precisa de internet):
+
+```bash
+cd Projeto/catalogo-filmes
+mvn test
+```
+
+Para ver os testes com falhas propositais falharem:
+
+```bash
+mvn test -DfalhasPropositais=true -Dtest=FalhasPropositaisTest
+```
