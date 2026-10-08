@@ -10,7 +10,7 @@ O sistema escolhido foi um catálogo de filmes, pois ele possui operações comu
 |------|-----------|--------|
 | João Pedro Souza Pereira | UC25200260 | joaopsouza-dev |
 | Kenzo Matsunaga | UC25200299 | kenzomats |
-| Giulia | UC25200440 | Giulia Valença de Melo - Giu_ |
+| Giulia | UC25200440 | Giu_ |
 | Kaylane | UC25200185 | Lanyx001 |
 
 ## Objetivo do trabalho
